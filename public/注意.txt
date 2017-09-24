@@ -1,0 +1,9 @@
+upload是uploadift上传图片的缓存文件夹
+
+ueditor是那个贼叼的文本输入的图片缓存文件夹
+
+static是放静态文件的,基本都是css js 图片等
+
+static/admin/css/common.css是控制分页的
+
+还有一些Ajax的方法,分别在admin和index下面的common.js里

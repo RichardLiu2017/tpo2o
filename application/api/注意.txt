@@ -1,0 +1,10 @@
+﻿这里是一些接口文件
+有Ajax处理二级城市\二级分类的文件
+有处理图片上传的文件
+有验证用户名是否存在的文件
+
+具体的js在public/static/admin/js/common.js
+
+同时,api文件夹下的common方法里有一个展示show()方法,可以进行json传送数据
+
+config.php里写了这个文件夹内的文件都以json形式传输

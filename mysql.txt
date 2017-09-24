@@ -1,0 +1,240 @@
+里面的parent_id就是同一张表里父级的id
+比如父级有一个娱乐,id是1,如果在娱乐下建一个子类,那这个子类的parent_id就是1;而娱乐的parent_id是0,因为娱乐没有父类
+
+
+生活服务分类表
+create table o2o_category(
+id int(11) unsigned not null auto_increment primary key,
+name varchar(50) not null default '',
+parent_id int(10) unsigned not null default 0,
+listorder int(8) unsigned not null default 0,//排序用的
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+key parent_id(`parent_id`)
+) ENGINE=InnoDB;
+
+城市表
+create table o2o_city(
+id int(11) unsigned not null auto_increment primary key,
+name varchar(50) not null default '',
+uname varchar(50) not null default '',//城市英文名
+parent_id int(10) unsigned not null default 0,
+is_default tinyint(3) unsigned not null default 0,//默认城市
+listorder int(8) unsigned not null default 0,//排序用的
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+key parent_id(`parent_id`),
+UNIQUE key uname(`uname`)
+) ENGINE=InnoDB;
+
+商圈表
+create table o2o_area(
+id int(11) unsigned not null auto_increment primary key,
+name varchar(50) not null default '',
+city_id int(10) unsigned not null default 0,
+parent_id int(10) unsigned not null default 0,
+listorder int(8) unsigned not null default 0,//排序用的
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+key parent_id(`parent_id`),
+key city_id(`city_id`)
+) ENGINE=InnoDB;
+
+商户表
+create table o2o_bis(
+id int(11) unsigned not null auto_increment primary key,
+name varchar(50) not null default '',
+email varchar(50) not null default '',
+logo varchar(255) not null default '',
+licence_logo varchar(255) not null default '',//营业执照
+description text not null,
+city_id int(10) unsigned not null default 0,
+city_path varchar(50) not null default '',//根据省份查找城市用的
+bank_info varchar(50) not null default '',
+money decimal(20,2) not null default '0.00',//商家的钱
+bank_name varchar(50) not null default '',//开户行名称
+bank_user varchar(50) not null default '',//开户人
+faren varchar(20) not null default '',//法人
+faren_tel varchar(20) not null default '',//法人联系方式
+listorder int(8) unsigned not null default 0,//排序用的
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+key name(`name`),
+key city_id(`city_id`)
+) ENGINE=InnoDB;
+
+商户账号表
+create table o2o_bis_account(
+id int(11) unsigned not null auto_increment primary key,
+username varchar(50) not null default '',
+password char(32) not null default '',
+code varchar(10) not null default '',//结合这个生成md5加密的密码
+bis_id int(11) unsigned not null default 0,
+last_login_ip varchar(20) not null default '',
+last_login_time int(11) unsigned not null default 0,
+is_main tinyint(1) unsigned not null default 0,//是否是总管理员
+listorder int(8) unsigned not null default 0,//排序用的
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+key username(`username`),
+key bis_id(`bis_id`)
+) ENGINE=InnoDB;
+
+商户门店表
+create table o2o_bis_location(
+id int(11) unsigned not null auto_increment primary key,
+name varchar(50) not null default '',
+logo varchar(255) not null default '',
+address varchar(255) not null default '',
+tel varchar(20) not null default '',
+contact varchar(20) not null default '',//联系人
+xpoint varchar(20) not null default '',//经度
+ypoint varchar(20) not null default '',//纬度
+bis_id int(11) unsigned not null default 0,
+open_time int(11) unsigned not null default 0,//营业时间
+content text not null,//门店介绍
+is_main tinyint(1) unsigned not null default 0,//是否是总店
+api_address varchar(255) not null default '',//根据这个查询地址
+city_id int(10) unsigned not null default 0,
+city_path varchar(50) not null default '',//根据省份查找城市用的
+category_id int(11) unsigned not null default 0,//分类信息
+category_path varchar(50) not null default '',//根据分类查找子类用的
+listorder int(8) unsigned not null default 0,//排序用的
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+key name(`name`),
+key city_id(`city_id`),
+key bis_id(`bis_id`),
+key category_id(`category_id`)
+) ENGINE=InnoDB;
+
+
+团购商品表
+create table o2o_deal(
+id int(11) unsigned not null auto_increment primary key,
+name varchar(100) not null default '',
+category_id int(11) unsigned not null default 0,//分类信息
+se_category_id varchar(50) not null default '',//二级分类信息
+bis_id int(11) unsigned not null default 0,
+location_ids varchar(100) not null default '',//以逗号隔开的,展示这个商品在哪些店
+image varchar(200) not null default '',
+description text not null,
+start_time int(11) unsigned not null default 0,//团购开始时间
+end_time int(11) unsigned not null default 0,//团购结束时间
+origin_price decimal(20,2) not null default '0.00',//团购原价
+current_price decimal(20,2) not null default '0.00',//团购现价
+city_id int(11) unsigned not null default 0,
+se_city_id int(11) unsigned not null default 0,
+buy_count int(11) unsigned not null default 0,//购买多少份
+total_count int(11) unsigned not null default 0,//总共多少份
+listorder int(11) unsigned not null default 0,//排序用的
+coupons_begin_time int(11) unsigned not null default 0,//优惠券开始时间
+coupons_end_time int(11) unsigned not null default 0,//优惠券结束时间
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+xpoint varchar(20) not null default '',//经度
+ypoint varchar(20) not null default '',//纬度
+bis_account_id int(10) not null default 0,//提交到哪个商户
+balance_price decimal(20,2) not null default '0.00',//与平台的抽成
+notes text not null,//商品提示
+key city_id(`city_id`),
+key bis_id(`bis_id`),
+key category_id(`category_id`),
+key se_category_id(`category_id`),
+key start_time(`start_time`),
+key end_time(`end_time`),
+key current_price(`current_price`)
+) ENGINE=InnoDB;
+
+
+用户账号表
+create table o2o_user(
+id int(11) unsigned not null auto_increment primary key,
+username varchar(50) not null default '',
+password char(32) not null default '',
+code varchar(10) not null default '',//结合这个生成md5加密的密码
+last_login_ip varchar(20) not null default '',
+last_login_time int(11) unsigned not null default 0,
+email varchar(50) not null default '',
+mobile varchar(50) not null default '',
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+UNIQUE key username(`username`),
+UNIQUE key email(`email`)
+) ENGINE=InnoDB;
+
+
+推荐位表
+create table o2o_featured(
+id int(11) unsigned not null auto_increment primary key,
+type tinyint(1) unsigned not null default 0,
+title varchar(200) not null default '',
+image varchar(200) not null default '',
+url varchar(200) not null default '',
+description varchar(200) not null default '',
+status tinyint(1) not null default 0,//状态码 比如删除什么的
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+listorder int(11) unsigned not null default 0//排序用的
+) ENGINE=InnoDB;
+
+
+订单表
+create table o2o_order(
+id int(11) unsigned not null auto_increment primary key,
+out_trade_no varchar(100) not null default '',//对外的订单编号
+transaction varchar(100) not null default '',//微信支付的编号
+user_id int(11) unsigned not null default 0,//哪个用户支付的
+user_name varchar(50) not null default '',
+pay_time varchar(20) not null default '',//微信支付时间
+payment_id tinyint(1) not null default 1,//支付方式,1是微信
+deal_id int(11) unsigned not null default 0,//商品id
+deal_count int(11) unsigned not null default 0,//购买数量
+pay_status tinyint(1) not null default 0 COMMNET '支付状态 0:未支付 1:支付成功 2:支付失败 3:其他',//支付状态
+total_price decimal(20,2) not null default '0.00',
+pay_amount decimal(20,2) not null default '0.00',//微信支付返回的总额
+create_time int(11) unsigned not null default 0,
+update_time int(11) unsigned not null default 0,
+status tinyint(1) not null default 1,
+referer varchar(255) not null default '',//购买来源
+UNIQUE key out_trade_no(`out_trade_no`),
+key user_id(`user_id`),
+key create_time(`create_time`),
+key pay_time(`pay_time`)
+) ENGINE=InnoDB;
+
+
+通过文件直接导入sql,建立表
+source d:/wamp64/www/tpo2o/o2o.sql;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

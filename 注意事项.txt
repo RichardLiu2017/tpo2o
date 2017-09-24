@@ -1,0 +1,28 @@
+1. 通过命令行开启一个近路(websever)
+到项目/public下
+执行 php -S localhost:8181 router.php
+
+2. 通过命令行创建文件
+到项目根目录下
+执行 php think make/controller index/Test
+
+3. 配置虚拟域名
+手动配置  apache配置 自己百度 http://www.imooc.com/article/16798
+PHPstudy/mamp配置
+
+4. 自动创建文件夹和文件
+cd d:/wamp64/www/tpo2o;
+在application里建一个build.php
+执行 php think build;
+
+
+5. composer获取验证码类
+首先进入项目根目录下
+输入 composer require topthink/think-captcha
+怎么使用  {:captcha_img()}
+
+
+6. 换到另一台电脑，需要先配置数据库，更改配置文件，在配置虚拟域名
+改extra下的文件
+
+填上数据，把苏州的默认城市改一下

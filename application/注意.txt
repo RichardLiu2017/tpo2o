@@ -1,0 +1,17 @@
+app文件夹下的database.php有数据库的相关配置信息
+
+common.php里有status()方法和doCurl()方法
+前者是用来将数据库里的状态转为文字,并加上样式
+后者是处理第三方接口的url的方法,通过url来获取内容(比如获取百度地图)
+
+bisRegister()方法是处理商家在填写申请后查看状态的方法,给商家一个提示,他的申请到哪一步了
+
+pagination()是一个渲染分页的方法,在需要的html页面里调用这个方法{:pagination($obj)}
+
+还有处理二级城市\二级分类的方法
+
+还有更改推荐位类别到中文的方法
+
+build.php是生成目录和文件的快捷方式 到这个项目的根目录下,输入 php think build.php就行
+
+关于图片上传的插件,需要复制view/public下面的footer.html 和 head.html文件中的js css相关内容
